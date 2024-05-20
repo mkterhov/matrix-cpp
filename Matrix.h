@@ -9,6 +9,9 @@ private:
 public:
     Matrix(const int&, const int&);
     Matrix(const Matrix&);
+    Matrix(Matrix&&) noexcept;
+
+    Matrix& operator=(Matrix&&) noexcept;
     Matrix& operator+(const Matrix&);
     Matrix& operator=(const Matrix&);
     ~Matrix();

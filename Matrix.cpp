@@ -21,6 +21,27 @@ Matrix::Matrix(const Matrix& m) {
     }
 }
 
+Matrix::Matrix(Matrix&& obj) noexcept : rows(obj.rows), columns(obj.columns), matrix(obj.matrix) {
+    obj.rows = 0;
+    obj.columns = 0;
+    obj.matrix = nullptr;
+    std::cout << "moved" << std::endl;
+}
+
+Matrix& Matrix::operator=(Matrix&& obj) noexcept {
+    if (this != &obj) {
+        rows = obj.rows;
+        columns = obj.columns;
+        matrix = obj.matrix;
+        std::cout << "moved = " << std::endl;
+
+        obj.rows = 0;
+        obj.columns = 0;
+        obj.matrix = nullptr;
+    }
+    return *this;
+}
+
 Matrix& Matrix::operator+(const Matrix& m) {
     if (rows != m.rows || columns != m.columns) {
         throw std::logic_error("Cannot add two matrices with varied column or row sizes");
@@ -92,6 +113,11 @@ void Matrix::populate() const {
 }
 
 void Matrix::print() const {
+    if (matrix == nullptr)
+    {
+        std::cout << "Matrix is empty" << std::endl;
+    }
+
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
             std::cout << "[" << i << "][" << j << "]: " << matrix[i][j] << " ";
